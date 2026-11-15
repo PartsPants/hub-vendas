@@ -3,7 +3,7 @@
   "short_name": "Vendas",
   "description": "Vendas, estoque, distribuidores e lucro por kit.",
   "lang": "pt-BR",
-  "id": "./",
+  "id": "/hub-vendas/",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

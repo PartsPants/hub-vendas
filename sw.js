@@ -1,11 +1,11 @@
 /* Hub de Vendas · service worker: guarda o "esqueleto" do site para abrir sem internet.
    Os dados NÃO passam por aqui (vão direto ao Supabase). Ao publicar versão nova, mude o número. */
-const VERSAO = 'vendas-v1';
+const VERSAO = 'vendas-v2';   /* só apaga os próprios caches: o Hub de Evolução mora no mesmo endereço */
 const ESQUELETO = ['./', './index.html', './nucleo.js', './config.js', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png', './icons/apple-touch-icon.png',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSAO).then(c => Promise.all(ESQUELETO.map(u => c.add(u).catch(() => null)))).then(() => self.skipWaiting())); });
-self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSAO).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSAO && k.startsWith('vendas-')).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 async function redePrimeiro(req, chave) {
   const cache = await caches.open(VERSAO);
   try {
